@@ -2,12 +2,13 @@ package books
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 )
 
-func Get() BookAPIResponse {
+func Get() Response {
 	resp, err := http.Get("https://bookmeter.com/users/1348458/books/reading.json")
 	if err != nil {
 		log.Fatalln(err)
@@ -17,20 +18,16 @@ func Get() BookAPIResponse {
 		log.Fatalln(err)
 	}
 	data := string(body)
-	prettyData := Book{}
+	metadata := Response{}
 
-	json.Unmarshal([]byte(data), &prettyData)
-
-	return BookAPIResponse{Author: prettyData.Resources[0].Book.Author.Name, Title: prettyData.Resources[0].Book.Title, ImageURL: prettyData.Resources[0].Book.ImageURL}
+	json.Unmarshal([]byte(data), &metadata)
+	fmt.Println(metadata)
+	return metadata
+	// return BookAPIResponse{Books: }
+	// return BookAPIResponse{Author: prettyData.Resources[0].Book.Author.Name, Title: prettyData.Resources[0].Book.Title, ImageURL: prettyData.Resources[0].Book.ImageURL}
 }
 
-type BookAPIResponse struct {
-	Title    string `json:"title"`
-	Author   string `json:"author"`
-	ImageURL string `json:"image_url"`
-}
-
-type Book struct {
+type Response struct {
 	Metadata struct {
 		Sort   string `json:"sort"`
 		Order  string `json:"order"`
@@ -63,6 +60,7 @@ type Book struct {
 				Name string `json:"name"`
 				Path string `json:"path"`
 			} `json:"author"`
+			BookRegistrationStatusPath string `json:"book_registration_status_path"`
 		} `json:"book"`
 		User struct {
 			ID    int    `json:"id"`
@@ -89,6 +87,7 @@ type Book struct {
 					Name string `json:"name"`
 					Path string `json:"path"`
 				} `json:"author"`
+				BookRegistrationStatusPath string `json:"book_registration_status_path"`
 			} `json:"book"`
 		} `json:"contents"`
 	} `json:"resources"`
