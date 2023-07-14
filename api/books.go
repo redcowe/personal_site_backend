@@ -23,8 +23,6 @@ func Get() Response {
 	json.Unmarshal([]byte(data), &metadata)
 	fmt.Println(metadata)
 	return metadata
-	// return BookAPIResponse{Books: }
-	// return BookAPIResponse{Author: prettyData.Resources[0].Book.Author.Name, Title: prettyData.Resources[0].Book.Title, ImageURL: prettyData.Resources[0].Book.ImageURL}
 }
 
 type Response struct {
