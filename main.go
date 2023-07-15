@@ -12,21 +12,16 @@ import (
 func main() {
 	r := gin.Default()
 
-	url := ""
+	origin := ""
 	mode := os.Getenv("GIN_MODE")
 	if mode == "" {
 		mode = "debug"
 	}
 
-	setOrigin(mode, &url)
+	setOrigin(mode, &origin)
 
-	r.Use(api.Cors(url))
+	r.Use(api.Cors(origin))
 
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
 	r.GET("/books", func(c *gin.Context) {
 
 		c.JSON(http.StatusOK, api.GetCurrent().Resources)
