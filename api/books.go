@@ -10,29 +10,38 @@ import (
 func GetCurrent() Response {
 	url := "https://bookmeter.com/users/1348458/books/reading.json"
 	response := Response{}
-	getBooks(url, &response)
+	err := getBooks(url, &response)
+
+	if err != nil {
+		log.Fatalln(err)
+	}
 	return response
 }
 
 func GetRead() Response {
 	url := "https://bookmeter.com/users/1348458/books/read.json"
 	response := Response{}
-	getBooks(url, &response)
-	return response
-}
+	err := getBooks(url, &response)
 
-func getBooks(url string, response *Response) {
-	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatalln(err)
 	}
+	return response
+}
+
+func getBooks(url string, response *Response) error {
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatalln(err)
+		return err
 	}
 	data := string(body)
 
 	json.Unmarshal([]byte(data), &response)
+	return nil
 }
 
 type Response struct {
