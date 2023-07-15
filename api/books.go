@@ -1,15 +1,28 @@
-package books
+package api
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 )
 
-func Get() Response {
-	resp, err := http.Get("https://bookmeter.com/users/1348458/books/reading.json")
+func GetCurrent() Response {
+	url := "https://bookmeter.com/users/1348458/books/reading.json"
+	response := Response{}
+	getBooks(url, &response)
+	return response
+}
+
+func GetRead() Response {
+	url := "https://bookmeter.com/users/1348458/books/read.json"
+	response := Response{}
+	getBooks(url, &response)
+	return response
+}
+
+func getBooks(url string, response *Response) {
+	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -18,11 +31,8 @@ func Get() Response {
 		log.Fatalln(err)
 	}
 	data := string(body)
-	metadata := Response{}
 
-	json.Unmarshal([]byte(data), &metadata)
-	fmt.Println(metadata)
-	return metadata
+	json.Unmarshal([]byte(data), &response)
 }
 
 type Response struct {
