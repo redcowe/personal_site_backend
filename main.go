@@ -30,16 +30,16 @@ func main() {
 	r.GET("/read", func(c *gin.Context) {
 		c.JSON(http.StatusOK, api.GetRead())
 	})
-	r.Run(":9080")
+	r.Run()
 
 }
 
 func setOrigin(mode string, url *string) {
 	if mode == "release" {
-		*url = "https://api.jcowe.jp"
+		*url = "https://jcowe.jp/"
 		log.Print("Using " + *url + " as origin")
 		return
 	}
-	*url = "http://localhost:3000"
+	*url = "https://jcowe.jp/"
 	log.Print("Using " + *url + " as origin")
 }
