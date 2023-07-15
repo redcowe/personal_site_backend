@@ -36,10 +36,10 @@ func main() {
 
 func setOrigin(mode string, url *string) {
 	if mode == "release" {
-		*url = "https://jcowe.jp/"
+		*url = "https://jcowe.jp"
 		log.Print("Using " + *url + " as origin")
 		return
 	}
-	*url = "https://jcowe.jp/"
+	*url = "http://localhost:3000"
 	log.Print("Using " + *url + " as origin")
 }
